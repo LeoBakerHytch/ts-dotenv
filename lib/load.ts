@@ -28,8 +28,9 @@ export function load<S extends EnvSchema>(
         ? { ...process.env, ...parsed }
         : { ...parsed, ...process.env };
 
-    const valid = validate(schema, merged);
-    if (valid) return coerce(schema, merged);
+    if (validate(schema, merged)) {
+        return coerce(schema, merged);
+    }
 
     throw Error('Invalid or missing environment variables');
 }

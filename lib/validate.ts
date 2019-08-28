@@ -10,7 +10,11 @@ const booleanRegExp = /^(true|false)$/;
  */
 const numberRegExp = /^-?\d{1,15}$/;
 
-export function validate(schema: EnvSchema, env: Env): boolean {
+export type ValidatedEnv = {
+    [key: string]: string;
+}
+
+export function validate(schema: EnvSchema, env: Env): env is ValidatedEnv {
     for (const [key, schemaValue] of Object.entries(schema)) {
         if (!(key in env)) return false;
 
