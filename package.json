@@ -23,6 +23,7 @@
     },
     "scripts": {
         "build": "tsc",
+        "clean": "rm -rf index.{js,js.map,d.ts} ./lib/*.{js,js.map,d.ts}",
         "test": "jest"
     },
     "dependencies": {},
