@@ -10,7 +10,7 @@ const booleanRegExp = /true|false/;
  */
 const numberRegExp = /\d+/;
 
-export function validate(env: Env, schema: EnvSchema): boolean {
+export function validate(schema: EnvSchema, env: Env): boolean {
     for (const [key, schemaValue] of Object.entries(schema)) {
         if (!(key in env)) return false;
 

@@ -4,7 +4,7 @@ type CoercedEnv = {
     [key: string]: boolean | number | string;
 };
 
-export function coerce<S extends EnvSchema>(env: Env, schema: S): EnvType<S> {
+export function coerce<S extends EnvSchema>(schema: S, env: Env): EnvType<S> {
     const coerced: CoercedEnv = {};
 
     for (const [key, schemaValue] of Object.entries(schema)) {
