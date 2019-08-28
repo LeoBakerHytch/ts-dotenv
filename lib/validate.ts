@@ -20,6 +20,7 @@ export function validate(schema: EnvSchema, env: Env): boolean {
         if (schemaValue === Boolean && !booleanRegExp.test(value)) return false;
         if (schemaValue === Number && !numberRegExp.test(value)) return false;
         if (schemaValue instanceof RegExp && !schemaValue.test(value)) return false;
+        if (value === '') return false;
     }
     return true;
 }
