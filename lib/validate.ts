@@ -8,7 +8,7 @@ const booleanRegExp = /^(true|false)$/;
 /**
  * Only allows integers; crudely prevents values greater than MAX_SAFE_INTEGER.
  */
-const numberRegExp = /^\d{1,15}$/;
+const numberRegExp = /^-?\d{1,15}$/;
 
 export function validate(schema: EnvSchema, env: Env): boolean {
     for (const [key, schemaValue] of Object.entries(schema)) {
