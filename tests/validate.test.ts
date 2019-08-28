@@ -73,4 +73,23 @@ describe('validate', () => {
             expect(validate(schema, env)).toEqual(false);
         });
     });
+
+    describe('missing & extra keys', () => {
+        const schema = { KEY: Boolean };
+
+        it('should reject an env missing a required key', () => {
+            const env = {};
+            expect(validate(schema, env)).toEqual(false);
+        });
+
+        it('should reject an env with an undefined key', () => {
+            const env = { KEY: undefined };
+            expect(validate(schema, env)).toEqual(false);
+        });
+
+        it('should allow an env with extra keys', () => {
+            const env = { KEY: 'true', NODE_ENV: 'production' };
+            expect(validate(schema, env)).toEqual(true);
+        });
+    });
 });
