@@ -15,6 +15,8 @@ export function validate(schema: EnvSchema, env: Env): boolean {
         if (!(key in env)) return false;
 
         const value = env[key];
+        if (value === undefined) return false;
+
         if (schemaValue === Boolean && !booleanRegExp.test(value)) return false;
         if (schemaValue === Number && !numberRegExp.test(value)) return false;
         if (schemaValue instanceof RegExp && !schemaValue.test(value)) return false;

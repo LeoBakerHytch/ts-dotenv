@@ -8,7 +8,7 @@ export function coerce<S extends EnvSchema>(schema: S, env: Env): EnvType<S> {
     const coerced: CoercedEnv = {};
 
     for (const [key, schemaValue] of Object.entries(schema)) {
-        const value = env[key];
+        const value = env[key] || '';
 
         if (schemaValue === Boolean) {
             coerced[key] = value === 'true';
