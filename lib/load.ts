@@ -39,6 +39,6 @@ function loadDotEnv(fileName: string, encoding: string): string {
     try {
         return readFileSync(fileName, encoding);
     } catch {
-        return '';
+        throw Error('Could not find environment file');
     }
 }
