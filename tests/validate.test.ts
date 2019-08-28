@@ -79,6 +79,11 @@ describe('validate', () => {
             KEY: String,
         };
 
+        it('should allow strings', () => {
+            const env = { KEY: 'abc 123' };
+            expect(validate(schema, env)).toEqual(true);
+        });
+
         it('should reject empty strings', () => {
             const env = { KEY: '' };
             expect(validate(schema, env)).toEqual(false);
