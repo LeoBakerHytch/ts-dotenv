@@ -1,0 +1,6 @@
+.idea
+.vscode
+node_modules
+*.js
+*.js.map
+*.d.ts
