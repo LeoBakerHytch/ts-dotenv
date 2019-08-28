@@ -74,6 +74,17 @@ describe('validate', () => {
         });
     });
 
+    describe('strings', () => {
+        const schema = {
+            KEY: String,
+        };
+
+        it('should reject empty strings', () => {
+            const env = { KEY: '' };
+            expect(validate(schema, env)).toEqual(false);
+        });
+    });
+
     describe('missing & extra keys', () => {
         const schema = { KEY: Boolean };
 
