@@ -57,4 +57,20 @@ describe('validate', () => {
             expect(validate(schema, env)).toEqual(false);
         });
     });
+
+    describe('regular expression', () => {
+        const schema = {
+            KEY: /abc/,
+        };
+
+        it('should allow a value that matches a provided regex', () => {
+            const env = { KEY: 'abc' };
+            expect(validate(schema, env)).toEqual(true);
+        });
+
+        it('should reject a value that does not match a provided regex', () => {
+            const env = { KEY: 'xyz' };
+            expect(validate(schema, env)).toEqual(false);
+        });
+    });
 });
