@@ -74,7 +74,7 @@ describe('validate', () => {
         });
     });
 
-    describe('strings', () => {
+    describe('string', () => {
         const schema = {
             KEY: String,
         };
