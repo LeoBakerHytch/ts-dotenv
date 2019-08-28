@@ -3,7 +3,7 @@ import { Env, EnvSchema } from './types';
 /**
  * Only allows exactly 'true' or 'false'
  */
-const booleanRegExp = /true|false/;
+const booleanRegExp = /^(true|false)$/;
 
 /**
  * Only allows integers.
