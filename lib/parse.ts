@@ -3,7 +3,7 @@ import { Env } from './types';
 /**
  * @see http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html
  */
-const lineRegExp = /([a-zA-Z_]+[a-zA-Z0-9_]*)=(.*)/;
+const lineRegExp = /^([a-zA-Z_]+[a-zA-Z0-9_]*)=(.*)$/;
 
 /**
  * Accounts for CR / LF / CR+LF line breaks
