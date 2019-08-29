@@ -17,7 +17,7 @@ Load environment variables from a `.env` file for development, but deploy to an 
 environment (you decide whether `process.env` or `.env` takes precedence), validated against a simple schema, and
 coerced to the appropriate types.
 
-`ts-dotenv` maintains [dev/prod parity] by not caring whether variables come from `.env` or `process.env`, as long as
+`ts-dotenv` maintains [dev/prod parity][0] by not caring whether variables come from `.env` or `process.env`, as long as
 they’re all present and the correct types. Otherwise, it fails fast, so your alarms should start going off and/or your
 rolling releases will abort. The thrown error details which variables are missing or have the wrong types. 
 
