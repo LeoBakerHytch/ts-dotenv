@@ -28,6 +28,13 @@ describe('load', () => {
             const env = load(schema, { fileName: '.env.custom' });
             expect(env).toEqual({ CUSTOM: 123 });
         });
+
+        it('should not error even when .env is missing', () => {
+            const schema = { ONLY_IN_PROCESS_ENV: Number };
+            process.env.ONLY_IN_PROCESS_ENV = '123';
+            const env = load(schema);
+            expect(env).toEqual({ ONLY_IN_PROCESS_ENV: 123 });
+        });
     });
 
     describe('process.env', () => {
@@ -54,9 +61,9 @@ describe('load', () => {
     });
 
     describe('errors', () => {
-        it('should throw attempting to load a missing .env', () => {
+        it('should throw loading .env with missing keys', () => {
             expect(() => {
-                load({}, '.env.missing');
+                load({ MISSING: Number });
             }).toThrow();
         });
 
