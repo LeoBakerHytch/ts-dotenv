@@ -51,7 +51,8 @@ export function load<S extends EnvSchema>(schema: S, pathOrOptions?: string | Op
         return coerce(schema, merged);
     }
 
-    throw new EnvError();
+    // Unreachable; validate either succeeds or throws
+    throw new EnvError({});
 }
 
 function loadDotEnv(fileName: string, encoding: string): string {

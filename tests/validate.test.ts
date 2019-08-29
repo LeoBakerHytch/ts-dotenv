@@ -111,15 +111,26 @@ describe('validate', () => {
     });
 
     describe('reporting', () => {
+        it('should throw a custom error type', () => {
+            const schema = {
+                MISSING: Boolean,
+            };
+
+            try {
+                validate(schema, {});
+            } catch (error) {
+                expect(error).toBeInstanceOf(EnvError);
+                expect(error.name).toEqual('EnvError');
+            }
+        });
+
         it('should report missing variables', () => {
             const schema = {
                 MISSING: Boolean,
             };
 
-            const env = {};
-
             try {
-                expect(validate(schema, env));
+                validate(schema, {});
             } catch (error) {
                 expect(error.toString()).toMatchInlineSnapshot(`
                     "EnvError: Invalid or missing environment variables
@@ -143,7 +154,7 @@ describe('validate', () => {
             };
 
             try {
-                expect(validate(schema, env));
+                validate(schema, env);
             } catch (error) {
                 expect(error.toString()).toMatchInlineSnapshot(`
                     "EnvError: Invalid or missing environment variables

@@ -14,20 +14,21 @@ export type EnvErrorReport = {
 };
 
 export class EnvError extends Error {
-    name = 'EnvError';
-    code = 'BAD_ENVIRONMENT_VARIABLES';
+    readonly name: string;
+    readonly report: EnvErrorReport;
 
-    constructor(public readonly report?: EnvErrorReport) {
+    constructor(report: EnvErrorReport) {
         super('Invalid or missing environment variables');
+
+        this.name = 'EnvError';
+        this.report = report;
     }
 
     toString() {
-        if (!this.report) return this.message;
-
-        const errors = Object.entries(this.report).map(([key, { type, schemaValue, value }]) =>
-            formatError(key, type, schemaValue, value),
-        );
-
+        const errors = Object.entries(this.report).map(entry => {
+            const [key, { type, schemaValue, value }] = entry;
+            return formatError(key, type, schemaValue, value);
+        });
         return super.toString() + `\n    - ${errors.join('\n    - ')}\n`;
     }
 }
