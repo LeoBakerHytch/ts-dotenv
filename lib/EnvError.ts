@@ -1,15 +1,15 @@
 import { EnvSchemaValue } from './types';
 
 export enum EnvErrorType {
-    MISSING,
-    WRONG_TYPE,
+    MISSING = 'MISSING',
+    WRONG_TYPE = 'WRONG_TYPE',
 }
 
 export type EnvErrorReport = {
     [key: string]: {
         type: EnvErrorType;
         schemaValue: EnvSchemaValue;
-        value?: string;
+        receivedValue?: string;
     };
 };
 
@@ -26,8 +26,8 @@ export class EnvError extends Error {
 
 function formatReport(report: EnvErrorReport) {
     const errors = Object.entries(report).map(entry => {
-        const [key, { type, schemaValue, value }] = entry;
-        return formatError(key, type, schemaValue, value);
+        const [key, { type, schemaValue, receivedValue }] = entry;
+        return formatError(key, type, schemaValue, receivedValue);
     });
     return `Invalid or missing environment variables\n    - ${errors.join('\n    - ')}\n`;
 }

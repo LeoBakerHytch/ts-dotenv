@@ -36,7 +36,7 @@ function validateSchema(schema: EnvSchema, env: Env): EnvErrorReport | null {
             report[key] = {
                 type: EnvErrorType.WRONG_TYPE,
                 schemaValue,
-                value,
+                receivedValue: value,
             };
         }
     }
