@@ -21,6 +21,7 @@
         "url": "git+https://github.com/LeoBakerHytch/ts-dotenv.git"
     },
     "main": "index.js",
+    "types": "index.d.ts",
     "files": [
         "**/*.js",
         "**/*.js.map",
@@ -31,8 +32,9 @@
     ],
     "scripts": {
         "build": "tsc --build tsconfig.dist.json",
-        "clean": "rm -rf index.{js,js.map,d.ts} ./lib/*.{js,js.map,d.ts}",
-        "test": "jest"
+        "clean": "rm -rf index.{js,js.map,d.ts} ./lib/*.{js,js.map,d.ts} ./tests/*.{js,js.map,d.ts}",
+        "test": "jest",
+        "test:dist": "jest -c jest.config.dist.js"
     },
     "dependencies": {},
     "devDependencies": {
