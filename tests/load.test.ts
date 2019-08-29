@@ -1,6 +1,10 @@
 import { load } from '../lib/load';
 
 describe('load', () => {
+    afterEach(() => {
+        process.env = {};
+    });
+
     it('should load .env from the working directory', () => {
         const env = load({
             BOOLEAN: Boolean,
