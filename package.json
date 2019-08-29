@@ -33,8 +33,7 @@
     "scripts": {
         "build": "tsc --build tsconfig.dist.json",
         "clean": "rm -rf index.{js,js.map,d.ts} ./lib/*.{js,js.map,d.ts} ./tests/*.{js,js.map,d.ts}",
-        "test": "jest",
-        "test:dist": "jest -c jest.config.dist.js"
+        "test": "jest"
     },
     "dependencies": {},
     "devDependencies": {
