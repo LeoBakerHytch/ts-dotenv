@@ -33,10 +33,10 @@ describe('load', () => {
             expect(env).toEqual({ CUSTOM: 123 });
         });
 
-        it('should not error even when .env is missing', () => {
+        it('should not error even when .env is missing (if schema validates)', () => {
             const schema = { ONLY_IN_PROCESS_ENV: Number };
             process.env.ONLY_IN_PROCESS_ENV = '123';
-            const env = load(schema);
+            const env = load(schema, '.env.missing');
             expect(env).toEqual({ ONLY_IN_PROCESS_ENV: 123 });
         });
     });
