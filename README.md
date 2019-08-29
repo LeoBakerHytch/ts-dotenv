@@ -31,11 +31,12 @@ variables. It’s a trade-off.)
 ## Usage
 
 ```dotenv
+# Comments are supported
 TRACING=true
 PORT=3000
 NODE_ENV=production
 BASE_URL=https://api.example.com
-#BASE_URL=https://api-dev.example.com
+#BASE_URL=https://api.example.com
 ```
 
 ```typescript

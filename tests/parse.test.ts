@@ -26,6 +26,10 @@ const bad2 = `
 bad.identifier=true
 `;
 
+const comment = `
+#STRING=local
+`;
+
 describe('parse', () => {
     it('should parse key-value environment variable pairs', () => {
         expect(parse(ok1)).toMatchInlineSnapshot(`
@@ -67,5 +71,9 @@ describe('parse', () => {
 
     it('should reject an identifier with a period', () => {
         expect(parse(bad2)).toMatchInlineSnapshot(`Object {}`);
+    });
+
+    it('should ignore comments', () => {
+        expect(parse(comment)).toEqual({});
     });
 });
