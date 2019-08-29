@@ -5,23 +5,23 @@ import { EnvSchema, EnvType } from './types';
 import { coerce } from './coerce';
 
 interface Options {
-    fileName?: string;
+    path?: string;
     encoding?: string;
     overrideProcessEnv?: boolean;
 }
 
-export function load<S extends EnvSchema>(schema: S, fileName?: string): EnvType<S>;
+export function load<S extends EnvSchema>(schema: S, path?: string): EnvType<S>;
 export function load<S extends EnvSchema>(schema: S, options?: Options): EnvType<S>;
 export function load<S extends EnvSchema>(
     schema: S,
-    fileNameOrOptions?: string | Options,
+    pathOrOptions?: string | Options,
 ): EnvType<S> {
-    const { fileName = '.env', encoding = 'utf-8', overrideProcessEnv = false } =
-        typeof fileNameOrOptions === 'string'
-            ? { fileName: fileNameOrOptions }
-            : fileNameOrOptions || {};
+    const { path = '.env', encoding = 'utf-8', overrideProcessEnv = false } =
+        typeof pathOrOptions === 'string'
+            ? { path: pathOrOptions }
+            : pathOrOptions || {};
 
-    const raw = loadDotEnv(fileName, encoding);
+    const raw = loadDotEnv(path, encoding);
     const parsed = parse(raw);
 
     const merged = overrideProcessEnv

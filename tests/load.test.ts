@@ -29,7 +29,7 @@ describe('load', () => {
 
         it('should load .env from a custom location (via options)', () => {
             const schema = { CUSTOM: Number };
-            const env = load(schema, { fileName: '.env.custom' });
+            const env = load(schema, { path: '.env.custom' });
             expect(env).toEqual({ CUSTOM: 123 });
         });
 
@@ -59,7 +59,7 @@ describe('load', () => {
         it('should allow .env to override process.env (by option)', () => {
             process.env.A = 'false';
             const schema = { A: Boolean };
-            const env = load(schema, { fileName: '.env.partial', overrideProcessEnv: true });
+            const env = load(schema, { path: '.env.partial', overrideProcessEnv: true });
             expect(env).toEqual({ A: true });
         });
     });
