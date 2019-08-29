@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`validate reporting should report badly typed variables 1`] = `
+"EnvError: Invalid or missing environment variables
+    - Expected value for key 'BOOLEAN' of type Boolean; got '123'
+    - Expected value for key 'NUMBER' of type Number; got 'abc'
+    - Expected value for key 'REGEXP' to match /abc/; got 'true'
+"
+`;
+
+exports[`validate reporting should report missing variables 1`] = `
+"EnvError: Invalid or missing environment variables
+    - Expected value for key 'MISSING'; none found
+"
+`;

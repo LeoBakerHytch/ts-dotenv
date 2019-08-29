@@ -129,15 +129,7 @@ describe('validate', () => {
                 MISSING: Boolean,
             };
 
-            try {
-                validate(schema, {});
-            } catch (error) {
-                expect(error.toString()).toMatchInlineSnapshot(`
-                    "EnvError: Invalid or missing environment variables
-                        - Expected value for key 'MISSING'; none found
-                    "
-                `);
-            }
+            expect(() => validate(schema, {})).toThrowErrorMatchingSnapshot();
         });
 
         it('should report badly typed variables', () => {
@@ -153,17 +145,7 @@ describe('validate', () => {
                 REGEXP: 'true',
             };
 
-            try {
-                validate(schema, env);
-            } catch (error) {
-                expect(error.toString()).toMatchInlineSnapshot(`
-                    "EnvError: Invalid or missing environment variables
-                        - Expected value for key 'BOOLEAN' of type Boolean; got '123'
-                        - Expected value for key 'NUMBER' of type Number; got 'abc'
-                        - Expected value for key 'REGEXP' to match /abc/; got 'true'
-                    "
-                `);
-            }
+            expect(() => validate(schema, env)).toThrowErrorMatchingSnapshot();
         });
     });
 });

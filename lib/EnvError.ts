@@ -18,19 +18,18 @@ export class EnvError extends Error {
     readonly report: EnvErrorReport;
 
     constructor(report: EnvErrorReport) {
-        super('Invalid or missing environment variables');
-
+        super(formatReport(report));
         this.name = 'EnvError';
         this.report = report;
     }
+}
 
-    toString() {
-        const errors = Object.entries(this.report).map(entry => {
-            const [key, { type, schemaValue, value }] = entry;
-            return formatError(key, type, schemaValue, value);
-        });
-        return super.toString() + `\n    - ${errors.join('\n    - ')}\n`;
-    }
+function formatReport(report: EnvErrorReport) {
+    const errors = Object.entries(report).map(entry => {
+        const [key, { type, schemaValue, value }] = entry;
+        return formatError(key, type, schemaValue, value);
+    });
+    return `EnvError: Invalid or missing environment variables\n    - ${errors.join('\n    - ')}\n`;
 }
 
 function formatError(
