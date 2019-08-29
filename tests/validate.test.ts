@@ -1,3 +1,4 @@
+import { EnvError } from '../lib/EnvError';
 import { validate } from '../lib/validate';
 
 describe('validate', () => {
@@ -18,17 +19,17 @@ describe('validate', () => {
 
         it('should reject a boolean with leading whitespace', () => {
             const env = { KEY: ' false' };
-            expect(validate(schema, env)).toBe(false);
+            expect(() => validate(schema, env)).toThrow(EnvError);
         });
 
         it('should reject a boolean with trailing whitespace', () => {
             const env = { KEY: 'false ' };
-            expect(validate(schema, env)).toBe(false);
+            expect(() => validate(schema, env)).toThrow(EnvError);
         });
 
         it('should reject any other string', () => {
             const env = { KEY: 'string' };
-            expect(validate(schema, env)).toBe(false);
+            expect(() => validate(schema, env)).toThrow(EnvError);
         });
     });
 
@@ -54,7 +55,7 @@ describe('validate', () => {
 
         it('should reject a number larger than the max safe integer', () => {
             const env = { KEY: '9007199254740992' };
-            expect(validate(schema, env)).toBe(false);
+            expect(() => validate(schema, env)).toThrow(EnvError);
         });
     });
 
@@ -70,7 +71,7 @@ describe('validate', () => {
 
         it('should reject a value that does not match a provided regex', () => {
             const env = { KEY: 'xyz' };
-            expect(validate(schema, env)).toBe(false);
+            expect(() => validate(schema, env)).toThrow(EnvError);
         });
     });
 
@@ -86,7 +87,7 @@ describe('validate', () => {
 
         it('should reject empty strings', () => {
             const env = { KEY: '' };
-            expect(validate(schema, env)).toBe(false);
+            expect(() => validate(schema, env)).toThrow(EnvError);
         });
     });
 
@@ -95,17 +96,63 @@ describe('validate', () => {
 
         it('should reject an env missing a required key', () => {
             const env = {};
-            expect(validate(schema, env)).toBe(false);
+            expect(() => validate(schema, env)).toThrow(EnvError);
         });
 
         it('should reject an env with an undefined key', () => {
             const env = { KEY: undefined };
-            expect(validate(schema, env)).toBe(false);
+            expect(() => validate(schema, env)).toThrow(EnvError);
         });
 
         it('should allow an env with extra keys', () => {
             const env = { KEY: 'true', NODE_ENV: 'production' };
             expect(validate(schema, env)).toBe(true);
+        });
+    });
+
+    describe('reporting', () => {
+        it('should report missing variables', () => {
+            const schema = {
+                MISSING: Boolean,
+            };
+
+            const env = {};
+
+            try {
+                expect(validate(schema, env));
+            } catch (error) {
+                expect(error.toString()).toMatchInlineSnapshot(`
+                    "EnvError: Invalid or missing environment variables
+                        - Expected value for key 'MISSING'; none found
+                    "
+                `);
+            }
+        });
+
+        it('should report badly typed variables', () => {
+            const schema = {
+                BOOLEAN: Boolean,
+                NUMBER: Number,
+                REGEXP: /abc/,
+            };
+
+            const env = {
+                BOOLEAN: '123',
+                NUMBER: 'abc',
+                REGEXP: 'true',
+            };
+
+            try {
+                expect(validate(schema, env));
+            } catch (error) {
+                expect(error.toString()).toMatchInlineSnapshot(`
+                    "EnvError: Invalid or missing environment variables
+                        - Expected value for key 'BOOLEAN' of type Boolean; got '123'
+                        - Expected value for key 'NUMBER' of type Number; got 'abc'
+                        - Expected value for key 'REGEXP' to match /abc/; got 'true'
+                    "
+                `);
+            }
         });
     });
 });

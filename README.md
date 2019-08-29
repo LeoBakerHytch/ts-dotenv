@@ -19,7 +19,7 @@ coerced to the appropriate types.
 
 `ts-dotenv` maintains [dev/prod parity] by not caring whether variables come from `.env` or `process.env`, as long as
 they’re all present and the correct types. Otherwise, it fails fast, so your alarms should start going off and/or your
-rolling releases will abort.
+rolling releases will abort. The thrown error details which variables are missing or have the wrong types. 
 
 **Caution**: Be careful removing variables from your prod environment; be sure to first remove them from the schema,
 otherwise your server won’t boot and it will have nothing to roll back to. (Or you could catch the error `ts-dotenv`

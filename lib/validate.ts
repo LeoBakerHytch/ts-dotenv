@@ -1,3 +1,4 @@
+import { EnvErrorReport, EnvErrorType, EnvError } from './EnvError';
 import { Env, EnvSchema } from './types';
 
 /**
@@ -12,19 +13,51 @@ const numberRegExp = /^-?\d{1,15}$/;
 
 export type ValidatedEnv = {
     [key: string]: string;
-}
+};
 
 export function validate(schema: EnvSchema, env: Env): env is ValidatedEnv {
-    for (const [key, schemaValue] of Object.entries(schema)) {
-        if (!(key in env)) return false;
-
-        const value = env[key];
-        if (value === undefined) return false;
-
-        if (schemaValue === Boolean && !booleanRegExp.test(value)) return false;
-        if (schemaValue === Number && !numberRegExp.test(value)) return false;
-        if (schemaValue instanceof RegExp && !schemaValue.test(value)) return false;
-        if (value === '') return false;
-    }
+    const report = validateSchema(schema, env);
+    if (report) throw new EnvError(report);
     return true;
+}
+
+function validateSchema(schema: EnvSchema, env: Env): EnvErrorReport | null {
+    const report: EnvErrorReport = {};
+
+    for (const [key, schemaValue] of Object.entries(schema)) {
+        const value = env[key];
+
+        if (!valueExists(value)) {
+            report[key] = {
+                type: EnvErrorType.MISSING,
+                schemaValue,
+            };
+        } else if (!typeMatches(schemaValue, value)) {
+            report[key] = {
+                type: EnvErrorType.WRONG_TYPE,
+                schemaValue,
+                value,
+            };
+        }
+    }
+
+    return Object.values(report).some(value => value != null) ? report : null;
+}
+
+function valueExists(value: string | undefined): value is string {
+    return !(value === undefined || value === '');
+}
+
+function typeMatches(schemaValue: any, value: string): boolean {
+    switch (schemaValue) {
+        case Boolean:
+            return booleanRegExp.test(value);
+
+        case Number:
+            return numberRegExp.test(value);
+
+        default:
+            if (schemaValue instanceof RegExp) return schemaValue.test(value);
+            return true;
+    }
 }

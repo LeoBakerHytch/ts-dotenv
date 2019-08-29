@@ -2,8 +2,10 @@ export type Env = {
     [key: string]: string | undefined;
 };
 
+export type EnvSchemaValue = BooleanConstructor | NumberConstructor | StringConstructor | RegExp;
+
 export type EnvSchema = {
-    [key: string]: BooleanConstructor | NumberConstructor | StringConstructor | RegExp;
+    [key: string]: EnvSchemaValue;
 };
 
 /**

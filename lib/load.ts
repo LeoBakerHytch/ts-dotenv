@@ -1,8 +1,10 @@
 import { readFileSync } from 'fs';
-import { parse } from './parse';
-import { validate } from './validate';
-import { EnvSchema, EnvType } from './types';
+
 import { coerce } from './coerce';
+import { EnvError } from './EnvError';
+import { parse } from './parse';
+import { EnvSchema, EnvType } from './types';
+import { validate } from './validate';
 
 interface Options {
     path?: string;
@@ -12,14 +14,9 @@ interface Options {
 
 export function load<S extends EnvSchema>(schema: S, path?: string): EnvType<S>;
 export function load<S extends EnvSchema>(schema: S, options?: Options): EnvType<S>;
-export function load<S extends EnvSchema>(
-    schema: S,
-    pathOrOptions?: string | Options,
-): EnvType<S> {
+export function load<S extends EnvSchema>(schema: S, pathOrOptions?: string | Options): EnvType<S> {
     const { path = '.env', encoding = 'utf-8', overrideProcessEnv = false } =
-        typeof pathOrOptions === 'string'
-            ? { path: pathOrOptions }
-            : pathOrOptions || {};
+        typeof pathOrOptions === 'string' ? { path: pathOrOptions } : pathOrOptions || {};
 
     const raw = loadDotEnv(path, encoding);
     const parsed = parse(raw);
@@ -32,7 +29,7 @@ export function load<S extends EnvSchema>(
         return coerce(schema, merged);
     }
 
-    throw Error('Invalid or missing environment variables');
+    throw new EnvError();
 }
 
 function loadDotEnv(fileName: string, encoding: string): string {
