@@ -29,7 +29,7 @@ function formatReport(report: EnvErrorReport) {
         const [key, { type, schemaValue, value }] = entry;
         return formatError(key, type, schemaValue, value);
     });
-    return `EnvError: Invalid or missing environment variables\n    - ${errors.join('\n    - ')}\n`;
+    return `Invalid or missing environment variables\n    - ${errors.join('\n    - ')}\n`;
 }
 
 function formatError(
