@@ -50,8 +50,8 @@ const env = load({
     PORT: Number,
     APP_NAME: /^[-a-z]+$/,
     BASE_URL: String,
-    NODE_ENV: ['production' as const, 'development' as const],
-});
+    NODE_ENV: ['production', 'development'],
+} as const);
 
 assert.ok(env.TRACING === true);
 assert.ok(env.PORT === 3000);
@@ -61,7 +61,28 @@ assert.ok(env.BASE_URL === 'https://api.example.com');
 assert.ok(env.EXTRA === undefined);
 ```
 
-Note: currently only integers are accepted as numbers.
+Note:
+
+  - `Number` only supports integers
+  - Only string unions are supported
+  - Use `as const` with string unions, to ensure a proper resulting environment type
+
+### Optionals & defaults
+
+Optional fields and default values can be defined with an extended schema specifier; for example:
+
+```typescript
+const schema = {
+    TRACING: {
+        type: Boolean,
+        optional: true,
+    },
+    NODE_ENV: {
+        type: ['production', 'development', 'local'],
+        default: 'local',
+    }
+} as const;
+```
 
 ### Boot
 
@@ -70,29 +91,27 @@ requests. The following pattern makes for easy, type-safe consumption of variabl
 
 #### `index.ts`
 ```typescript
-import { load } from 'ts-dotenv';
-import { setEnv, schema } from './env';
+import { loadEnv } from './env';
 
-const env = load(schema);
-setEnv(env); // Set synchronously before the rest of your app is loaded
+loadEnv(); // Executed synchronously before the rest of your app loads
 
 require('./server'); // Your server’s actual entry
 ```
 
 #### `env.ts`
 ```typescript
-import { EnvType } from 'ts-dotenv';
+import { EnvType, load } from 'ts-dotenv';
 
 export type Env = EnvType<typeof schema>;
 
 export const schema = {
-    NODE_ENV: String
+    NODE_ENV: ['production', 'development']
 };
 
 export let env: Env;
 
-export function setEnv(environment: Env): void {
-    env = environment;
+export function loadEnv(): void {
+    env = load(schema);
 }
 ```
 
@@ -108,8 +127,9 @@ if (env.NODE_ENV === 'production') {
 ### Options
 
 By default:
-- Values in `process.env` take precedence
-- `.env` is the expected file name, loaded from the working directory
+
+  - Values in `process.env` take precedence
+  - `.env` is the expected file name, loaded from the working directory
 
 Change this through options:
 
@@ -132,7 +152,8 @@ const env = load(schema, {
 
 ## Improvements
 
-- Add support for floats & enums
+  - Add support for floats
+  - Add support for number union types
 
 ## Acknowledgements
 

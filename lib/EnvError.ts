@@ -1,4 +1,4 @@
-import { EnvSchemaValue } from './types';
+import { EnvKeyConfig } from './types';
 
 export enum EnvErrorType {
     MISSING = 'MISSING',
@@ -8,7 +8,7 @@ export enum EnvErrorType {
 export type EnvErrorReport = {
     [key: string]: {
         type: EnvErrorType;
-        schemaValue: EnvSchemaValue;
+        config: EnvKeyConfig;
         receivedValue?: string;
     };
 };
@@ -26,8 +26,8 @@ export class EnvError extends Error {
 
 function formatReport(report: EnvErrorReport) {
     const errors = Object.entries(report).map(entry => {
-        const [key, { type, schemaValue, receivedValue }] = entry;
-        return formatError(key, type, schemaValue, receivedValue);
+        const [key, { type, config, receivedValue }] = entry;
+        return formatError(key, type, config, receivedValue);
     });
     return `Invalid or missing environment variables\n    - ${errors.join('\n    - ')}\n`;
 }
@@ -35,7 +35,7 @@ function formatReport(report: EnvErrorReport) {
 function formatError(
     key: string,
     type: EnvErrorType,
-    schemaValue: EnvSchemaValue,
+    config: EnvKeyConfig,
     value: string | undefined,
 ): string {
     switch (type) {
@@ -43,15 +43,15 @@ function formatError(
             return `Expected value for key '${key}'; none found`;
 
         case EnvErrorType.WRONG_TYPE:
-            if (schemaValue instanceof RegExp) {
-                return `Expected value for key '${key}' to match ${schemaValue}; got '${value}'`;
+            if (config.type instanceof RegExp) {
+                return `Expected value for key '${key}' to match ${config.type}; got '${value}'`;
             }
 
-            if (schemaValue instanceof Array) {
-                const expectedValues = schemaValue.map(value => `'${value}'`).join(', ');
-                return `Expected value for key '${key}' to be one of ${expectedValues}; got ${value}`;
+            if (config.type instanceof Array) {
+                const expectedValues = config.type.map(value => `'${value}'`).join(' | ');
+                return `Expected value for key '${key}' to be one of ${expectedValues}; got '${value}'`;
             }
 
-            return `Expected value for key '${key}' of type ${schemaValue.name}; got '${value}'`;
+            return `Expected value for key '${key}' of type ${config.type.name}; got '${value}'`;
     }
 }

@@ -5,6 +5,7 @@ exports[`validate reporting should report badly typed variables 1`] = `
     - Expected value for key 'BOOLEAN' of type Boolean; got '123'
     - Expected value for key 'NUMBER' of type Number; got 'abc'
     - Expected value for key 'REGEXP' to match /abc/; got 'true'
+    - Expected value for key 'STRING_UNION' to be one of 'abc' | 'def'; got 'xyz'
 "
 `;
 

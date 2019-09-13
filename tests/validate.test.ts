@@ -108,7 +108,9 @@ describe('validate', () => {
     });
 
     describe('missing & extra keys', () => {
-        const schema = { KEY: Boolean };
+        const schema = {
+            KEY: Boolean,
+        };
 
         it('should reject an env missing a required key', () => {
             const env = {};
@@ -123,6 +125,28 @@ describe('validate', () => {
         it('should allow an env with extra keys', () => {
             const env = { KEY: 'true', NODE_ENV: 'production' };
             expect(validate(schema, env)).toBe(true);
+        });
+    });
+
+    describe('optional keys', () => {
+        it('should allow missing values for an optional key', () => {
+            const schema = {
+                KEY: {
+                    type: Boolean,
+                    optional: true,
+                },
+            } as const;
+            expect(validate(schema, {})).toBe(true);
+        });
+
+        it('should allow missing values for a key with a default', () => {
+            const schema = {
+                KEY: {
+                    type: Boolean,
+                    default: true,
+                },
+            };
+            expect(validate(schema, {})).toBe(true);
         });
     });
 
@@ -153,12 +177,14 @@ describe('validate', () => {
                 BOOLEAN: Boolean,
                 NUMBER: Number,
                 REGEXP: /abc/,
+                STRING_UNION: ['abc', 'def'],
             };
 
             const env = {
                 BOOLEAN: '123',
                 NUMBER: 'abc',
                 REGEXP: 'true',
+                STRING_UNION: 'xyz',
             };
 
             expect(() => validate(schema, env)).toThrowErrorMatchingSnapshot();

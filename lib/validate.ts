@@ -1,5 +1,6 @@
 import { EnvErrorReport, EnvErrorType, EnvError } from './EnvError';
-import { Env, EnvSchema } from './types';
+import { normalize } from './normalize';
+import { Env, EnvKeyConfig, EnvSchema } from './types';
 
 /**
  * Only allows exactly 'true' or 'false'
@@ -26,16 +27,19 @@ function validateSchema(schema: EnvSchema, env: Env): EnvErrorReport | null {
 
     for (const [key, schemaValue] of Object.entries(schema)) {
         const value = env[key];
+        const config = normalize(schemaValue);
 
         if (!valueExists(value)) {
-            report[key] = {
-                type: EnvErrorType.MISSING,
-                schemaValue,
-            };
-        } else if (!typeMatches(schemaValue, value)) {
+            if (!config.optional) {
+                report[key] = {
+                    type: EnvErrorType.MISSING,
+                    config,
+                };
+            }
+        } else if (!typeMatches(config, value)) {
             report[key] = {
                 type: EnvErrorType.WRONG_TYPE,
-                schemaValue,
+                config,
                 receivedValue: value,
             };
         }
@@ -48,17 +52,10 @@ function valueExists(value: string | undefined): value is string {
     return !(value === undefined || value === '');
 }
 
-function typeMatches(schemaValue: any, value: string): boolean {
-    switch (schemaValue) {
-        case Boolean:
-            return booleanRegExp.test(value);
-
-        case Number:
-            return numberRegExp.test(value);
-
-        default:
-            if (schemaValue instanceof Array) return schemaValue.includes(value);
-            if (schemaValue instanceof RegExp) return schemaValue.test(value);
-            return true;
-    }
+function typeMatches(config: EnvKeyConfig, value: string): boolean {
+    if (config.type === Boolean) return booleanRegExp.test(value);
+    if (config.type === Number) return numberRegExp.test(value);
+    if (config.type instanceof Array) return config.type.includes(value);
+    if (config.type instanceof RegExp) return config.type.test(value);
+    return true;
 }
