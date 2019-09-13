@@ -1,4 +1,4 @@
-import { EnvSchemaValue } from './types';
+import { EnvSchemaType } from './types';
 
 export enum EnvErrorType {
     MISSING = 'MISSING',
@@ -8,7 +8,7 @@ export enum EnvErrorType {
 export type EnvErrorReport = {
     [key: string]: {
         type: EnvErrorType;
-        schemaValue: EnvSchemaValue;
+        schemaValue: EnvSchemaType;
         receivedValue?: string;
     };
 };
@@ -35,7 +35,7 @@ function formatReport(report: EnvErrorReport) {
 function formatError(
     key: string,
     type: EnvErrorType,
-    schemaValue: EnvSchemaValue,
+    schemaValue: EnvSchemaType,
     value: string | undefined,
 ): string {
     switch (type) {

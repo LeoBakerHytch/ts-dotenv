@@ -2,15 +2,40 @@ export type Env = {
     [key: string]: string | undefined;
 };
 
-export type EnvSchemaValue =
+export type EnvSchemaType =
     | BooleanConstructor
     | NumberConstructor
     | StringConstructor
     | RegExp
     | Array<string>;
 
+interface OptionalKeyConfig {
+    type: EnvSchemaType;
+    optional: true;
+}
+
+interface BooleanKeyConfig {
+    type: BooleanConstructor;
+    default: boolean;
+}
+
+interface NumberKeyConfig {
+    type: NumberConstructor;
+    default: number;
+}
+
+interface StringKeyConfig {
+    type: StringConstructor | RegExp | Array<string>;
+    default: string;
+}
+
 export type EnvSchema = {
-    [key: string]: EnvSchemaValue;
+    [key: string]:
+        | EnvSchemaType
+        | OptionalKeyConfig
+        | BooleanKeyConfig
+        | NumberKeyConfig
+        | StringKeyConfig;
 };
 
 /**
