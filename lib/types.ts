@@ -46,10 +46,6 @@ export type EnvSchema = {
     [key: string]: EnvSchemaValue;
 };
 
-export type NormalizedSchema = {
-    [key: string]: EnvKeyConfig;
-};
-
 /**
  * Resolves to the type of the provided environment schema.
  *
