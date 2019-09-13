@@ -29,13 +29,21 @@ interface StringKeyConfig {
     default: string;
 }
 
+export type EnvSchemaValue =
+    | EnvSchemaType
+    | OptionalKeyConfig
+    | BooleanKeyConfig
+    | NumberKeyConfig
+    | StringKeyConfig;
+
+export interface EnvKeyConfig {
+    type: EnvSchemaType;
+    optional: boolean;
+    default?: boolean | number | string;
+}
+
 export type EnvSchema = {
-    [key: string]:
-        | EnvSchemaType
-        | OptionalKeyConfig
-        | BooleanKeyConfig
-        | NumberKeyConfig
-        | StringKeyConfig;
+    [key: string]: EnvSchemaValue;
 };
 
 /**
