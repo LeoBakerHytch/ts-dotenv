@@ -126,6 +126,28 @@ describe('validate', () => {
         });
     });
 
+    describe('optional keys', () => {
+        it('should allow missing values for an optional key', () => {
+            const schema = {
+                KEY: {
+                    type: Boolean,
+                    optional: true,
+                },
+            };
+            expect(validate(schema, {})).toBe(true);
+        });
+
+        it('should allow missing values for a key with a default', () => {
+            const schema = {
+                KEY: {
+                    type: Boolean,
+                    default: true,
+                },
+            };
+            expect(validate(schema, {})).toBe(true);
+        });
+    });
+
     describe('reporting', () => {
         it('should throw a custom error type', () => {
             const schema = {
