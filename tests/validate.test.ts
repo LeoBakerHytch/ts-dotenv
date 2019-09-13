@@ -177,12 +177,14 @@ describe('validate', () => {
                 BOOLEAN: Boolean,
                 NUMBER: Number,
                 REGEXP: /abc/,
+                STRING_UNION: ['abc', 'def'],
             };
 
             const env = {
                 BOOLEAN: '123',
                 NUMBER: 'abc',
                 REGEXP: 'true',
+                STRING_UNION: 'xyz',
             };
 
             expect(() => validate(schema, env)).toThrowErrorMatchingSnapshot();

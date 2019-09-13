@@ -48,7 +48,7 @@ function formatError(
             }
 
             if (config.type instanceof Array) {
-                const expectedValues = config.type.map(value => `'${value}'`).join(', ');
+                const expectedValues = config.type.map(value => `'${value}'`).join(' | ');
                 return `Expected value for key '${key}' to be one of ${expectedValues}; got '${value}'`;
             }
 
