@@ -91,6 +91,22 @@ describe('validate', () => {
         });
     });
 
+    describe('string union', () => {
+        const schema = {
+            KEY: ['value' as const],
+        };
+
+        it('should allow specified strings', () => {
+            const env = { KEY: 'value' };
+            expect(validate(schema, env)).toBe(true);
+        });
+
+        it('should reject other strings', () => {
+            const env = { KEY: 'another-value' };
+            expect(() => validate(schema, env)).toThrow(EnvError);
+        });
+    });
+
     describe('missing & extra keys', () => {
         const schema = { KEY: Boolean };
 
