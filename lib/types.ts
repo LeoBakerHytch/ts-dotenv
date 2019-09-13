@@ -27,5 +27,7 @@ export type EnvType<S extends EnvSchema> = {
         ? string
         : S[K] extends RegExp
         ? string
+        : S[K] extends Array<infer U>
+        ? U
         : never;
 };
