@@ -2,7 +2,12 @@ export type Env = {
     [key: string]: string | undefined;
 };
 
-export type EnvSchemaValue = BooleanConstructor | NumberConstructor | StringConstructor | RegExp;
+export type EnvSchemaValue =
+    | BooleanConstructor
+    | NumberConstructor
+    | StringConstructor
+    | RegExp
+    | Array<string>;
 
 export type EnvSchema = {
     [key: string]: EnvSchemaValue;
@@ -22,5 +27,7 @@ export type EnvType<S extends EnvSchema> = {
         ? string
         : S[K] extends RegExp
         ? string
+        : S[K] extends Array<infer U>
+        ? U
         : never;
 };

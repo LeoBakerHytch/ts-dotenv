@@ -35,6 +35,7 @@ variables. It’s a trade-off.)
 TRACING=true
 PORT=3000
 NODE_ENV=production
+APP_NAME=test-app
 BASE_URL=https://api.example.com
 #BASE_URL=https://development-api.example.com
 EXTRA=true
@@ -47,12 +48,14 @@ import { load } from 'ts-dotenv';
 const env = load({
     TRACING: Boolean,
     PORT: Number,
-    NODE_ENV: /^(production|development|ci|local)$/,
+    APP_NAME: /^[-a-z]+$/,
     BASE_URL: String,
+    NODE_ENV: ['production' as const, 'development' as const],
 });
 
 assert.ok(env.TRACING === true);
 assert.ok(env.PORT === 3000);
+assert.ok(env.APP_NAME === 'test-app');
 assert.ok(env.NODE_ENV === 'production');
 assert.ok(env.BASE_URL === 'https://api.example.com');
 assert.ok(env.EXTRA === undefined);
