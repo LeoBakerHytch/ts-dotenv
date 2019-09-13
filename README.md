@@ -50,8 +50,11 @@ const env = load({
     PORT: Number,
     APP_NAME: /^[-a-z]+$/,
     BASE_URL: String,
-    NODE_ENV: ['production', 'development'],
-} as const);
+    NODE_ENV: [
+        'production' as const,
+        'development' as const,
+    ],
+});
 
 assert.ok(env.TRACING === true);
 assert.ok(env.PORT === 3000);
@@ -78,7 +81,7 @@ const schema = {
         optional: true,
     },
     NODE_ENV: {
-        type: ['production', 'development', 'local'],
+        type: String,
         default: 'local',
     }
 } as const;
@@ -105,7 +108,7 @@ import { EnvType, load } from 'ts-dotenv';
 export type Env = EnvType<typeof schema>;
 
 export const schema = {
-    NODE_ENV: ['production', 'development']
+    NODE_ENV: String,
 };
 
 export let env: Env;
