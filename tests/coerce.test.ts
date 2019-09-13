@@ -59,4 +59,15 @@ describe('coerce', () => {
             expect(coerce(schema, env)).toEqual({ KEY: 'abc' });
         });
     });
+
+    describe('string union', () => {
+        const schema = {
+            KEY: ['abc'],
+        };
+
+        it('should remain a string', () => {
+            const env = { KEY: 'abc' };
+            expect(coerce(schema, env)).toEqual({ KEY: 'abc' });
+        });
+    });
 });
