@@ -133,7 +133,7 @@ describe('validate', () => {
                     type: Boolean,
                     optional: true,
                 },
-            };
+            } as const;
             expect(validate(schema, {})).toBe(true);
         });
 
