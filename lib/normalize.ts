@@ -1,12 +1,6 @@
-import { EnvKeyConfig, EnvSchema, EnvSchemaValue, NormalizedSchema } from './types';
+import { EnvKeyConfig, EnvSchemaValue } from './types';
 
-export function normalize(schema: EnvSchema): NormalizedSchema {
-    const result: NormalizedSchema = {};
-    for (const [key, schemaValue] of Object.entries(schema)) result[key] = getConfig(schemaValue);
-    return result;
-}
-
-function getConfig(schemaValue: EnvSchemaValue): EnvKeyConfig {
+export function normalize(schemaValue: EnvSchemaValue): EnvKeyConfig {
     return 'type' in schemaValue
         ? {
               type: schemaValue.type,
