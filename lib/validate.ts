@@ -57,6 +57,7 @@ function typeMatches(schemaValue: any, value: string): boolean {
             return numberRegExp.test(value);
 
         default:
+            if (schemaValue instanceof Array) return schemaValue.includes(value);
             if (schemaValue instanceof RegExp) return schemaValue.test(value);
             return true;
     }
