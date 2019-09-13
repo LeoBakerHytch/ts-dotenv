@@ -1,12 +1,11 @@
 import { EnvError } from '../lib/EnvError';
-import { normalize } from '../lib/normalize';
 import { validate } from '../lib/validate';
 
 describe('validate', () => {
     describe('boolean', () => {
-        const schema = normalize({
+        const schema = {
             KEY: Boolean,
-        });
+        };
 
         it('should allow true', () => {
             const env = { KEY: 'true' };
@@ -35,9 +34,9 @@ describe('validate', () => {
     });
 
     describe('number', () => {
-        const schema = normalize({
+        const schema = {
             KEY: Number,
-        });
+        };
 
         it('should allow positive integers', () => {
             const env = { KEY: '123' };
@@ -61,9 +60,9 @@ describe('validate', () => {
     });
 
     describe('regular expression', () => {
-        const schema = normalize({
+        const schema = {
             KEY: /abc/,
-        });
+        };
 
         it('should allow a value that matches a provided regex', () => {
             const env = { KEY: 'abc' };
@@ -77,9 +76,9 @@ describe('validate', () => {
     });
 
     describe('string', () => {
-        const schema = normalize({
+        const schema = {
             KEY: String,
-        });
+        };
 
         it('should allow strings', () => {
             const env = { KEY: 'abc 123' };
@@ -93,9 +92,9 @@ describe('validate', () => {
     });
 
     describe('string union', () => {
-        const schema = normalize({
+        const schema = {
             KEY: ['value' as const],
-        });
+        };
 
         it('should allow specified strings', () => {
             const env = { KEY: 'value' };
@@ -109,9 +108,9 @@ describe('validate', () => {
     });
 
     describe('missing & extra keys', () => {
-        const schema = normalize({
+        const schema = {
             KEY: Boolean,
-        });
+        };
 
         it('should reject an env missing a required key', () => {
             const env = {};
@@ -131,31 +130,31 @@ describe('validate', () => {
 
     describe('optional keys', () => {
         it('should allow missing values for an optional key', () => {
-            const schema = normalize({
+            const schema = {
                 KEY: {
                     type: Boolean,
                     optional: true,
                 },
-            });
+            } as const;
             expect(validate(schema, {})).toBe(true);
         });
 
         it('should allow missing values for a key with a default', () => {
-            const schema = normalize({
+            const schema = {
                 KEY: {
                     type: Boolean,
                     default: true,
                 },
-            });
+            };
             expect(validate(schema, {})).toBe(true);
         });
     });
 
     describe('reporting', () => {
         it('should throw a custom error type', () => {
-            const schema = normalize({
+            const schema = {
                 MISSING: Boolean,
-            });
+            };
 
             try {
                 validate(schema, {});
@@ -166,19 +165,19 @@ describe('validate', () => {
         });
 
         it('should report missing variables', () => {
-            const schema = normalize({
+            const schema = {
                 MISSING: Boolean,
-            });
+            };
 
             expect(() => validate(schema, {})).toThrowErrorMatchingSnapshot();
         });
 
         it('should report badly typed variables', () => {
-            const schema = normalize({
+            const schema = {
                 BOOLEAN: Boolean,
                 NUMBER: Number,
                 REGEXP: /abc/,
-            });
+            };
 
             const env = {
                 BOOLEAN: '123',

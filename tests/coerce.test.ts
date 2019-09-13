@@ -1,11 +1,10 @@
 import { coerce } from '../lib/coerce';
-import { normalize } from '../lib/normalize';
 
 describe('coerce', () => {
     describe('boolean', () => {
-        const schema = normalize({
+        const schema = {
             KEY: Boolean,
-        });
+        };
 
         it('should coerce true', () => {
             const env = {
@@ -22,20 +21,20 @@ describe('coerce', () => {
         });
 
         it('should use a default value', () => {
-            const schema = normalize({
+            const schema = {
                 KEY: {
                     type: Boolean,
                     default: true,
                 },
-            });
+            };
             expect(coerce(schema, {})).toEqual({ KEY: true });
         });
     });
 
     describe('number', () => {
-        const schema = normalize({
+        const schema = {
             KEY: Number,
-        });
+        };
 
         it('should coerce a positive number', () => {
             const env = {
@@ -59,21 +58,21 @@ describe('coerce', () => {
         });
 
         it('should use a default value', () => {
-            const schema = normalize({
+            const schema = {
                 KEY: {
                     type: Number,
                     default: 10,
                 },
-            });
+            };
             expect(coerce(schema, {})).toEqual({ KEY: 10 });
         });
     });
 
     describe('regular expression', () => {
         it('should remain a string', () => {
-            const schema = normalize({
+            const schema = {
                 KEY: /abc/,
-            });
+            };
             const env = {
                 KEY: 'abc',
             };
@@ -81,18 +80,18 @@ describe('coerce', () => {
         });
 
         it('should use a default value', () => {
-            const schema = normalize({
+            const schema = {
                 KEY: { type: /abc/, default: 'abc' },
-            });
+            };
             expect(coerce(schema, {})).toEqual({ KEY: 'abc' });
         });
     });
 
     describe('string', () => {
         it('should remain a string', () => {
-            const schema = normalize({
+            const schema = {
                 KEY: String,
-            });
+            };
             const env = {
                 KEY: 'abc',
             };
@@ -100,21 +99,21 @@ describe('coerce', () => {
         });
 
         it('should use a default value', () => {
-            const schema = normalize({
+            const schema = {
                 KEY: {
                     type: String,
                     default: 'xyz',
                 },
-            });
+            };
             expect(coerce(schema, {})).toEqual({ KEY: 'xyz' });
         });
     });
 
     describe('string union', () => {
         it('should remain a string', () => {
-            const schema = normalize({
+            const schema = {
                 KEY: ['abc'],
-            });
+            };
             const env = {
                 KEY: 'abc',
             };
@@ -122,12 +121,12 @@ describe('coerce', () => {
         });
 
         it('should use a default value', () => {
-            const schema = normalize({
+            const schema = {
                 KEY: {
                     type: ['abc', 'def'],
                     default: 'def',
                 },
-            });
+            };
             expect(coerce(schema, {})).toEqual({ KEY: 'def' });
         });
     });
