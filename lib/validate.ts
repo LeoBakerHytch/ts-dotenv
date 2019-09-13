@@ -1,5 +1,6 @@
 import { EnvErrorReport, EnvErrorType, EnvError } from './EnvError';
-import { Env, EnvKeyConfig, NormalizedSchema } from './types';
+import { normalize } from './normalize';
+import { Env, EnvKeyConfig, EnvSchema } from './types';
 
 /**
  * Only allows exactly 'true' or 'false'
@@ -15,17 +16,18 @@ export type ValidatedEnv = {
     [key: string]: string;
 };
 
-export function validate(schema: NormalizedSchema, env: Env): env is ValidatedEnv {
+export function validate(schema: EnvSchema, env: Env): env is ValidatedEnv {
     const report = validateSchema(schema, env);
     if (report) throw new EnvError(report);
     return true;
 }
 
-function validateSchema(schema: NormalizedSchema, env: Env): EnvErrorReport | null {
+function validateSchema(schema: EnvSchema, env: Env): EnvErrorReport | null {
     const report: EnvErrorReport = {};
 
-    for (const [key, config] of Object.entries(schema)) {
+    for (const [key, schemaValue] of Object.entries(schema)) {
         const value = env[key];
+        const config = normalize(schemaValue);
 
         if (!valueExists(value)) {
             if (!config.optional) {
