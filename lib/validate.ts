@@ -1,5 +1,5 @@
 import { EnvErrorReport, EnvErrorType, EnvError } from './EnvError';
-import { Env, EnvKeyConfig, EnvSchema, EnvSchemaValue } from './types';
+import { Env, EnvKeyConfig, NormalizedSchema } from './types';
 
 /**
  * Only allows exactly 'true' or 'false'
@@ -15,17 +15,16 @@ export type ValidatedEnv = {
     [key: string]: string;
 };
 
-export function validate(schema: EnvSchema, env: Env): env is ValidatedEnv {
+export function validate(schema: NormalizedSchema, env: Env): env is ValidatedEnv {
     const report = validateSchema(schema, env);
     if (report) throw new EnvError(report);
     return true;
 }
 
-function validateSchema(schema: EnvSchema, env: Env): EnvErrorReport | null {
+function validateSchema(schema: NormalizedSchema, env: Env): EnvErrorReport | null {
     const report: EnvErrorReport = {};
 
-    for (const [key, schemaValue] of Object.entries(schema)) {
-        const config = getKeyConfig(schemaValue);
+    for (const [key, config] of Object.entries(schema)) {
         const value = env[key];
 
         if (!valueExists(value)) {
@@ -45,19 +44,6 @@ function validateSchema(schema: EnvSchema, env: Env): EnvErrorReport | null {
     }
 
     return Object.values(report).some(value => value != null) ? report : null;
-}
-
-function getKeyConfig(schemaValue: EnvSchemaValue): EnvKeyConfig {
-    return 'type' in schemaValue
-        ? {
-              type: schemaValue.type,
-              optional: 'optional' in schemaValue ? schemaValue.optional : true,
-              default: 'default' in schemaValue ? schemaValue.default : undefined,
-          }
-        : {
-              type: schemaValue,
-              optional: false,
-          };
 }
 
 function valueExists(value: string | undefined): value is string {
