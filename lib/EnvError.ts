@@ -43,8 +43,15 @@ function formatError(
             return `Expected value for key '${key}'; none found`;
 
         case EnvErrorType.WRONG_TYPE:
-            return schemaValue instanceof RegExp
-                ? `Expected value for key '${key}' to match ${schemaValue}; got '${value}'`
-                : `Expected value for key '${key}' of type ${schemaValue.name}; got '${value}'`;
+            if (schemaValue instanceof RegExp) {
+                return `Expected value for key '${key}' to match ${schemaValue}; got '${value}'`;
+            }
+
+            if (schemaValue instanceof Array) {
+                const expectedValues = schemaValue.map(value => `'${value}'`).join(', ');
+                return `Expected value for key '${key}' to be one of ${expectedValues}; got ${value}`;
+            }
+
+            return `Expected value for key '${key}' of type ${schemaValue.name}; got '${value}'`;
     }
 }
