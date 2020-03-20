@@ -9,12 +9,12 @@ describe('validate', () => {
 
         it('should allow true', () => {
             const env = { KEY: 'true' };
-            expect(validate(schema, env)).toBe(true);
+            expect(() => validate(schema, env)).not.toThrow();
         });
 
         it('should allow false', () => {
             const env = { KEY: 'false' };
-            expect(validate(schema, env)).toBe(true);
+            expect(() => validate(schema, env)).not.toThrow();
         });
 
         it('should reject a boolean with leading whitespace', () => {
@@ -40,17 +40,17 @@ describe('validate', () => {
 
         it('should allow positive integers', () => {
             const env = { KEY: '123' };
-            expect(validate(schema, env)).toBe(true);
+            expect(() => validate(schema, env)).not.toThrow();
         });
 
         it('should allow negative integers', () => {
             const env = { KEY: '-123' };
-            expect(validate(schema, env)).toBe(true);
+            expect(() => validate(schema, env)).not.toThrow();
         });
 
         it('should allow a large number', () => {
             const env = { KEY: '123456789012345' };
-            expect(validate(schema, env)).toBe(true);
+            expect(() => validate(schema, env)).not.toThrow();
         });
 
         it('should reject a number larger than the max safe integer', () => {
@@ -66,7 +66,7 @@ describe('validate', () => {
 
         it('should allow a value that matches a provided regex', () => {
             const env = { KEY: 'abc' };
-            expect(validate(schema, env)).toBe(true);
+            expect(() => validate(schema, env)).not.toThrow();
         });
 
         it('should reject a value that does not match a provided regex', () => {
@@ -82,7 +82,7 @@ describe('validate', () => {
 
         it('should allow strings', () => {
             const env = { KEY: 'abc 123' };
-            expect(validate(schema, env)).toBe(true);
+            expect(() => validate(schema, env)).not.toThrow();
         });
 
         it('should reject empty strings', () => {
@@ -98,7 +98,7 @@ describe('validate', () => {
 
         it('should allow specified strings', () => {
             const env = { KEY: 'value' };
-            expect(validate(schema, env)).toBe(true);
+            expect(() => validate(schema, env)).not.toThrow();
         });
 
         it('should reject other strings', () => {
@@ -124,7 +124,7 @@ describe('validate', () => {
 
         it('should allow an env with extra keys', () => {
             const env = { KEY: 'true', NODE_ENV: 'production' };
-            expect(validate(schema, env)).toBe(true);
+            expect(() => validate(schema, env)).not.toThrow();
         });
     });
 
@@ -136,7 +136,7 @@ describe('validate', () => {
                     optional: true,
                 },
             } as const;
-            expect(validate(schema, {})).toBe(true);
+            expect(() => validate(schema, {})).not.toThrow();
         });
 
         it('should allow missing values for a key with a default', () => {
@@ -146,7 +146,7 @@ describe('validate', () => {
                     default: true,
                 },
             };
-            expect(validate(schema, {})).toBe(true);
+            expect(() => validate(schema, {})).not.toThrow();
         });
     });
 

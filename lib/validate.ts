@@ -16,10 +16,9 @@ export type ValidatedEnv = {
     [key: string]: string;
 };
 
-export function validate(schema: EnvSchema, env: Env): env is ValidatedEnv {
+export function validate(schema: EnvSchema, env: Env): asserts env is ValidatedEnv {
     const report = validateSchema(schema, env);
     if (report) throw new EnvError(report);
-    return true;
 }
 
 function validateSchema(schema: EnvSchema, env: Env): EnvErrorReport | null {

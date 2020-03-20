@@ -47,12 +47,9 @@ export function load<S extends EnvSchema>(schema: S, pathOrOptions?: string | Op
         ? { ...process.env, ...parsed }
         : { ...parsed, ...process.env };
 
-    if (validate(schema, merged)) {
-        return coerce(schema, merged);
-    }
+    validate(schema, merged);
 
-    // Unreachable; validate either succeeds or throws
-    throw new EnvError({});
+    return coerce(schema, merged);
 }
 
 function loadDotEnv(fileName: string, encoding: string): string {
