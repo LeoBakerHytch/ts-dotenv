@@ -33,6 +33,32 @@ describe('validate', () => {
         });
     });
 
+    describe('buffer', () => {
+        const schema = {
+            KEY: Buffer,
+        };
+
+        it('should allow a full word', () => {
+            const env = { KEY: 'YWJj' };
+            expect(() => validate(schema, env)).not.toThrow();
+        });
+
+        it('should allow a word padded with =', () => {
+            const env = { KEY: 'YWI=' };
+            expect(() => validate(schema, env)).not.toThrow();
+        });
+
+        it('should allow a word padded with ==', () => {
+            const env = { KEY: 'YQ==' };
+            expect(() => validate(schema, env)).not.toThrow();
+        });
+
+        it('should reject an improperly padded value', () => {
+            const env = { KEY: 'YW=' };
+            expect(() => validate(schema, env)).toThrow();
+        });
+    });
+
     describe('number', () => {
         const schema = {
             KEY: Number,

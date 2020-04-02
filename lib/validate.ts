@@ -8,6 +8,11 @@ import { Env, EnvKeyConfig, EnvSchema } from './types';
 const booleanRegExp = /^(true|false)$/;
 
 /**
+ * Matches base-64 encoded binary data; checks for proper padding
+ */
+const base64RegExp = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
+
+/**
  * Only allows integers; crudely prevents values greater than MAX_SAFE_INTEGER.
  */
 const numberRegExp = /^-?\d{1,15}$/;
@@ -53,6 +58,7 @@ function valueExists(value: string | undefined): value is string {
 
 function typeMatches(config: EnvKeyConfig, value: string): boolean {
     if (config.type === Boolean) return booleanRegExp.test(value);
+    if (config.type === Buffer) return base64RegExp.test(value);
     if (config.type === Number) return numberRegExp.test(value);
     if (config.type instanceof Array) return config.type.includes(value);
     if (config.type instanceof RegExp) return config.type.test(value);

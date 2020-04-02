@@ -31,6 +31,31 @@ describe('coerce', () => {
         });
     });
 
+    describe('buffer', () => {
+        it('should coerce base64-encoded data', () => {
+            const schema = {
+                KEY: Buffer,
+            };
+
+            const env = {
+                KEY: '8J+Sjg==',
+            };
+
+            expect(coerce(schema, env).KEY.toString()).toEqual('💎');
+        });
+
+        it('should use a default value', () => {
+            const schema = {
+                KEY: {
+                    type: Buffer,
+                    default: Buffer.from('🎉'),
+                },
+            };
+
+            expect(coerce(schema, {}).KEY.toString()).toEqual('🎉');
+        });
+    });
+
     describe('number', () => {
         const schema = {
             KEY: Number,

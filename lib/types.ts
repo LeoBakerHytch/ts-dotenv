@@ -9,13 +9,14 @@ export type EnvSchema = {
 export interface EnvKeyConfig {
     type: EnvSchemaType;
     optional: boolean;
-    default?: boolean | number | string;
+    default?: boolean | Buffer | number | string;
 }
 
 export type EnvSchemaValue = DefaultValueKeyConfig | OptionalKeyConfig | EnvSchemaType;
 
 export type EnvSchemaType =
     | BooleanConstructor
+    | typeof Buffer
     | NumberConstructor
     | StringConstructor
     | RegExp
@@ -28,12 +29,18 @@ interface OptionalKeyConfig<T extends EnvSchemaType = EnvSchemaType> {
 
 type DefaultValueKeyConfig =
     | DefaultBooleanKeyConfig
+    | DefaultBufferKeyConfig
     | DefaultNumberKeyConfig
     | DefaultStringKeyConfig;
 
 interface DefaultBooleanKeyConfig {
     type: BooleanConstructor;
     default: boolean;
+}
+
+interface DefaultBufferKeyConfig {
+    type: typeof Buffer;
+    default: Buffer;
 }
 
 interface DefaultNumberKeyConfig {
@@ -55,7 +62,7 @@ export type EnvType<S extends EnvSchema> = {
     [K in keyof S]: S[K] extends DefaultValueKeyConfig
         ? EnvSchemaDefaultValueType<S[K]>
         : S[K] extends OptionalKeyConfig<infer U>
-        ? (EnvSchemaValueType<S[K]['type']> | undefined)
+        ? EnvSchemaValueType<S[K]['type']> | undefined
         : S[K] extends EnvSchemaType
         ? EnvSchemaValueType<S[K]>
         : never;
@@ -63,6 +70,8 @@ export type EnvType<S extends EnvSchema> = {
 
 type EnvSchemaDefaultValueType<C extends DefaultValueKeyConfig> = C extends DefaultBooleanKeyConfig
     ? boolean
+    : C extends DefaultBufferKeyConfig
+    ? Buffer
     : C extends DefaultNumberKeyConfig
     ? number
     : C extends DefaultStringKeyConfig
@@ -71,6 +80,8 @@ type EnvSchemaDefaultValueType<C extends DefaultValueKeyConfig> = C extends Defa
 
 type EnvSchemaValueType<T extends EnvSchemaType> = T extends BooleanConstructor
     ? boolean
+    : T extends typeof Buffer
+    ? Buffer
     : T extends NumberConstructor
     ? number
     : T extends StringConstructor

@@ -3,7 +3,7 @@ import { EnvSchema, EnvType } from './types';
 import { ValidatedEnv } from './validate';
 
 type CoercedEnv = {
-    [key: string]: boolean | number | string;
+    [key: string]: boolean | Buffer | number | string;
 };
 
 export function coerce<S extends EnvSchema>(
@@ -23,6 +23,11 @@ export function coerce<S extends EnvSchema>(
 
         if (config.type === Boolean) {
             coerced[key] = value === 'true';
+            continue;
+        }
+
+        if (config.type === Buffer) {
+            coerced[key] = Buffer.from(value, 'base64');
             continue;
         }
 
