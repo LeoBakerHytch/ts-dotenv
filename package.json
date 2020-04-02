@@ -1,6 +1,6 @@
 {
     "name": "ts-dotenv",
-    "version": "0.7.2",
+    "version": "0.8.0",
     "description": "Strongly-typed environment variables from .env & process.env",
     "author": "Leo Baker-Hytch",
     "license": "MIT",
