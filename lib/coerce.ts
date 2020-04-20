@@ -3,7 +3,7 @@ import { EnvSchema, EnvType } from './types';
 import { ValidatedEnv } from './validate';
 
 type CoercedEnv = {
-    [key: string]: boolean | Buffer | number | string;
+    [key: string]: boolean | Buffer | number | string | undefined;
 };
 
 export function coerce<S extends EnvSchema>(
@@ -18,6 +18,11 @@ export function coerce<S extends EnvSchema>(
 
         if (config.default !== undefined && (value === '' || value === undefined)) {
             coerced[key] = config.default;
+            continue;
+        }
+
+        if (config.optional && value === undefined) {
+            coerced[key] = undefined;
             continue;
         }
 

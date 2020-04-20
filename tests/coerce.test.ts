@@ -29,6 +29,16 @@ describe('coerce', () => {
             };
             expect(coerce(schema, {})).toEqual({ KEY: true });
         });
+
+        it('should allow undefined', () => {
+            const schema = {
+                KEY: {
+                    type: Boolean,
+                    optional: true,
+                },
+            };
+            expect(coerce(schema, {})).toEqual({ KEY: undefined });
+        })
     });
 
     describe('buffer', () => {
@@ -54,6 +64,16 @@ describe('coerce', () => {
 
             expect(coerce(schema, {}).KEY.toString()).toEqual('🎉');
         });
+
+        it('should allow undefined', () => {
+            const schema = {
+                KEY: {
+                    type: Buffer,
+                    optional: true,
+                },
+            };
+            expect(coerce(schema, {})).toEqual({ KEY: undefined });
+        })
     });
 
     describe('number', () => {
@@ -91,6 +111,16 @@ describe('coerce', () => {
             };
             expect(coerce(schema, {})).toEqual({ KEY: 10 });
         });
+
+        it('should allow undefined', () => {
+            const schema = {
+                KEY: {
+                    type: Number,
+                    optional: true,
+                },
+            };
+            expect(coerce(schema, {})).toEqual({ KEY: undefined });
+        })
     });
 
     describe('regular expression', () => {
@@ -110,6 +140,16 @@ describe('coerce', () => {
             };
             expect(coerce(schema, {})).toEqual({ KEY: 'abc' });
         });
+
+        it('should allow undefined', () => {
+            const schema = {
+                KEY: {
+                    type: /abc/,
+                    optional: true,
+                },
+            };
+            expect(coerce(schema, {})).toEqual({ KEY: undefined });
+        })
     });
 
     describe('string', () => {
@@ -132,6 +172,16 @@ describe('coerce', () => {
             };
             expect(coerce(schema, {})).toEqual({ KEY: 'xyz' });
         });
+
+        it('should allow undefined', () => {
+            const schema = {
+                KEY: {
+                    type: String,
+                    optional: true,
+                },
+            };
+            expect(coerce(schema, {})).toEqual({ KEY: undefined });
+        })
     });
 
     describe('string union', () => {
@@ -154,5 +204,15 @@ describe('coerce', () => {
             };
             expect(coerce(schema, {})).toEqual({ KEY: 'def' });
         });
+
+        it('should allow undefined', () => {
+            const schema = {
+                KEY: {
+                    type: ['abc', 'def'],
+                    optional: true,
+                },
+            };
+            expect(coerce(schema, {})).toEqual({ KEY: undefined });
+        })
     });
 });
