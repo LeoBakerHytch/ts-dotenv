@@ -38,7 +38,7 @@
     },
     "dependencies": {},
     "devDependencies": {
-        "@types/jest": "^25.1.4",
+        "@types/jest": "^26.0.8",
         "@types/node": "^12.7.2",
         "coveralls": "^3.0.6",
         "jest": "^25.1.0",
