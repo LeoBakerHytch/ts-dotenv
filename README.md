@@ -6,8 +6,6 @@ Strongly-typed Node.js environment variables from `.env` and `process.env`.
 [![License](https://badgen.net/github/license/LeoBakerHytch/ts-dotenv)](https://github.com/LeoBakerHytch/ts-dotenv/blob/master/LICENSE)
 [![Travis](https://badgen.net/travis/LeoBakerHytch/ts-dotenv)](https://travis-ci.org/LeoBakerHytch/ts-dotenv)
 [![Coveralls](https://badgen.net/coveralls/c/github/LeoBakerHytch/ts-dotenv)](https://coveralls.io/github/LeoBakerHytch/ts-dotenv)
-[![Dependencies](https://badgen.net/david/dep/LeoBakerHytch/ts-dotenv)](https://david-dm.org/LeoBakerHytch/ts-dotenv)
-[![Dev Dependencies](https://badgen.net/david/dev/LeoBakerHytch/ts-dotenv)](https://david-dm.org/LeoBakerHytch/ts-dotenv)
 [![Dependabot Status](https://badgen.net/dependabot/LeoBakerHytch/ts-dotenv?icon=dependabot)](https://dependabot.com)
 
 ## Motivation
