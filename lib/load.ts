@@ -8,7 +8,7 @@ import { validate } from './validate';
 
 interface Options {
     path?: string;
-    encoding?: string;
+    encoding?: BufferEncoding;
     overrideProcessEnv?: boolean;
 }
 
@@ -52,7 +52,7 @@ export function load<S extends EnvSchema>(schema: S, pathOrOptions?: string | Op
     return coerce(schema, merged);
 }
 
-function loadDotEnv(fileName: string, encoding: string): string {
+function loadDotEnv(fileName: string, encoding: BufferEncoding): string {
     try {
         return readFileSync(fileName, encoding);
     } catch {
