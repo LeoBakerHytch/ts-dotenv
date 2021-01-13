@@ -38,6 +38,30 @@ describe('parse', () => {
     it('should ignore comments', () => {
         expect(parse(comment)).toEqual({});
     });
+
+    it('should parse a line with leading whitespace', () => {
+        expect(parse(ok5)).toEqual({
+            LEADING_WHITESPACE: 'cadillac'
+        })
+    })
+
+    it('should parse a line with trailing whitespace', () => {
+        expect(parse(ok6)).toEqual({
+            TRAILING_WHITESPACE: 'mercury'
+        })
+    })
+
+    it('should parse a line with extra whitespace', () => {
+        expect(parse(ok7)).toEqual({
+            EXTRA_WHITESPACE: 'pontiac'
+        })
+    })
+
+    it('should parse a line with extra ws and a string value containing ws', () => {
+        expect(parse(ok8)).toEqual({
+            EXTRA_WHITESPACE_STRING: 'thunder bird'
+        })
+    })
 });
 
 const ok1 = `
@@ -69,3 +93,18 @@ bad.identifier=true
 const comment = `
 #STRING=local
 `;
+
+const ok5 = `
+ LEADING_WHITESPACE=cadillac
+ `;
+
+const ok6 = `
+TRAILING_WHITESPACE=mercury 
+ `;
+
+const ok7 = `
+ EXTRA_WHITESPACE = pontiac
+ `
+const ok8 = `
+ EXTRA_WHITESPACE_STRING = thunder bird
+ `
