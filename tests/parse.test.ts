@@ -27,6 +27,20 @@ describe('parse', () => {
         });
     });
 
+    it('should trim whitespaces', () => {
+        expect(parse(ok5)).toEqual({
+            STRING_TRIMMED: 'Lorem ipsum',
+        });
+    });
+
+    it('should parse quoted values correctly', () => {
+        expect(parse(ok6)).toEqual({
+            STRING_SINGLE_QUOTED: 'Lorem ipsum',
+            STRING_DOUBLE_QUOTED: 'Lorem ipsum',
+            STRING_SPACE_QUOTED: ' Lorem ipsum ',
+        });
+    });
+
     it('should reject a line with no key-value pair', () => {
         expect(parse(bad1)).toEqual({});
     });
@@ -56,6 +70,17 @@ LARGE_NUMBER=123456789012345
 
 const ok4 = `
 lowercase_identifier=true
+`;
+
+// value has a leading and trailing whitespace (!)
+const ok5 = `
+STRING_TRIMMED= Lorem ipsum 
+`;
+
+const ok6 = `
+STRING_SINGLE_QUOTED='Lorem ipsum'
+STRING_DOUBLE_QUOTED="Lorem ipsum"
+STRING_SPACE_QUOTED=" Lorem ipsum "
 `;
 
 const bad1 = `

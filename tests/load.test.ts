@@ -11,12 +11,18 @@ describe('load', () => {
             NUMBER: Number,
             REGEXP: /^abc$/,
             STRING: String,
+            STRING_QUOTED: String,
+            STRING_WHITESPACE: String,
+            STRING_QUOTED_WHITESPCAE: String,
         });
         expect(env).toEqual({
             BOOLEAN: true,
             NUMBER: 1234,
             REGEXP: 'abc',
             STRING: 'Lorem ipsum',
+            STRING_QUOTED: 'Lorem ipsum',
+            STRING_WHITESPACE: 'Lorem ipsum',
+            STRING_QUOTED_WHITESPCAE: ' Lorem ipsum ',
         });
     });
 

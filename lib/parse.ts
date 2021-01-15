@@ -19,7 +19,22 @@ export function parse(dotEnv: string): Env {
         if (!match) continue;
 
         const variableName = match[1];
-        parsed[variableName] = match[2];
+
+        // borrowed from https://github.com/motdotla/dotenv/blob/7301ac9be0b2c766f865bbe24280bf82586d25aa/lib/main.js#L49
+        let val = match[2] || '';
+        const end = val.length - 1;
+        const isDoubleQuoted = val[0] === '"' && val[end] === '"';
+        const isSingleQuoted = val[0] === "'" && val[end] === "'";
+
+        // if single or double quoted, remove quotes
+        if (isSingleQuoted || isDoubleQuoted) {
+            val = val.substring(1, end);
+        } else {
+            // remove surrounding whitespace
+            val = val.trim();
+        }
+
+        parsed[variableName] = val;
     }
 
     return parsed;
