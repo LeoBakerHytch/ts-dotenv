@@ -184,9 +184,10 @@ describe('validate', () => {
 
             try {
                 validate(schema, {});
-            } catch (error) {
+            } catch (error: unknown) {
                 expect(error).toBeInstanceOf(EnvError);
-                expect(error.name).toEqual('EnvError');
+                const envError = error as EnvError;
+                expect(envError.name).toEqual('EnvError');
             }
         });
 
