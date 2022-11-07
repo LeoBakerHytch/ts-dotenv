@@ -186,7 +186,7 @@ describe('validate', () => {
                 validate(schema, {});
             } catch (error) {
                 expect(error).toBeInstanceOf(EnvError);
-                expect(error.name).toEqual('EnvError');
+                expect((error as EnvError).name).toEqual('EnvError');
             }
         });
 
