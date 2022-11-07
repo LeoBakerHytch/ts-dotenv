@@ -62,7 +62,7 @@ export type EnvType<S extends EnvSchema> = {
     [K in keyof S]: S[K] extends DefaultValueKeyConfig
         ? EnvSchemaDefaultValueType<S[K]>
         : S[K] extends OptionalKeyConfig<infer U>
-        ? EnvSchemaValueType<S[K]['type']> | undefined
+        ? EnvSchemaValueType<OptionalKeyConfig<U>['type']> | undefined
         : S[K] extends EnvSchemaType
         ? EnvSchemaValueType<S[K]>
         : never;
