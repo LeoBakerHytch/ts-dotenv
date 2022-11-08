@@ -15,7 +15,7 @@ coerced to the appropriate types.
 
 `ts-dotenv` maintains [dev/prod parity][0] by not caring whether variables come from `.env` or `process.env`, as long as
 they’re all present and the correct types. Otherwise, it fails fast, so your alarms should start going off and/or your
-rolling releases will abort. The thrown error details which variables are missing or have the wrong types. 
+rolling releases will abort. The thrown error details which variables are missing or have the wrong types.
 
 **Caution**: Be careful removing variables from your prod environment; be sure to first remove them from the schema,
 otherwise your server won’t boot and it will have nothing to roll back to. (Or you could catch the error `ts-dotenv`
@@ -46,10 +46,7 @@ const env = load({
     PORT: Number,
     APP_NAME: /^[-a-z]+$/,
     BASE_URL: String,
-    NODE_ENV: [
-        'production' as const,
-        'development' as const,
-    ],
+    NODE_ENV: ['production' as const, 'development' as const],
 });
 
 assert.ok(env.TRACING === true);
@@ -62,9 +59,28 @@ assert.ok(env.EXTRA === undefined);
 
 Note:
 
-  - `Number` only supports integers
-  - Only string unions are supported
-  - Use `as const` with string unions, to ensure a proper resulting environment type
+-   `Number` only supports integers
+-   Only string unions are supported
+-   Use `as const` with string unions, to ensure a proper resulting environment type
+
+### Strings
+
+Strings may be single- or double-quoted. Leading and / or trailing whitespace is removed, unless it’s inside the quotes.
+
+```dotenv
+UNQUOTED= Lorem ipsum
+SINGLE_QUOTED= 'Lorem ipsum'
+DOUBLE_QUOTED= "Lorem ipsum"
+QUOTED_WITH_SURROUNDING_WHITESPACE= " Lorem ipsum "
+```
+
+Within double quotes, escaped newlines (`\n`) / carriage returns (`\r`) are converted to their corresponding literal
+characters.
+
+```dotenv
+DOUBLE_QUOTED_WITH_NEWLINE="Lorem\nipsum"
+DOUBLE_QUOTED_WITH_CR="Lorem\ripsum"
+```
 
 ### Optionals & defaults
 
@@ -79,7 +95,7 @@ const schema = {
     NODE_ENV: {
         type: String,
         default: 'local',
-    }
+    },
 } as const;
 ```
 
@@ -89,6 +105,7 @@ Run `ts-dotenv` from your app’s entry, to ensure variables are loaded before y
 requests. The following pattern makes for easy, type-safe consumption of variables throughout your app:
 
 #### `index.ts`
+
 ```typescript
 import { loadEnv } from './env';
 
@@ -98,6 +115,7 @@ require('./server'); // Your server’s actual entry
 ```
 
 #### `env.ts`
+
 ```typescript
 import { EnvType, load } from 'ts-dotenv';
 
@@ -115,6 +133,7 @@ export function loadEnv(): void {
 ```
 
 #### `example-module.ts`
+
 ```typescript
 import { env } from './env';
 
@@ -127,8 +146,8 @@ if (env.NODE_ENV === 'production') {
 
 By default:
 
-  - Values in `process.env` take precedence
-  - `.env` is the expected file name, loaded from the working directory
+-   Values in `process.env` take precedence
+-   `.env` is the expected file name, loaded from the working directory
 
 Change this through options:
 
@@ -148,11 +167,6 @@ const env = load(schema, {
     overrideProcessEnv: true,
 });
 ```
-
-## Improvements
-
-  - Add support for floats
-  - Add support for number union types
 
 ## Acknowledgements
 
