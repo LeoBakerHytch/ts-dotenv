@@ -34,6 +34,7 @@ NODE_ENV=production
 APP_NAME=test-app
 BASE_URL=https://api.example.com
 #BASE_URL=https://development-api.example.com
+BASE64_ENCODED=8J+agA==
 EXTRA=true
 ```
 
@@ -47,6 +48,7 @@ const env = load({
     APP_NAME: /^[-a-z]+$/,
     BASE_URL: String,
     NODE_ENV: ['production' as const, 'development' as const],
+    BASE64_ENCODED: Buffer,
 });
 
 assert.ok(env.TRACING === true);
@@ -54,6 +56,7 @@ assert.ok(env.PORT === 3000);
 assert.ok(env.APP_NAME === 'test-app');
 assert.ok(env.NODE_ENV === 'production');
 assert.ok(env.BASE_URL === 'https://api.example.com');
+assert.ok(env.BASE64_ENCODED === Buffer.from('🚀'));
 assert.ok(env.EXTRA === undefined);
 ```
 
@@ -62,16 +65,17 @@ Note:
 -   `Number` only supports integers
 -   Only string unions are supported
 -   Use `as const` with string unions, to ensure a proper resulting environment type
+-   All values may be surrounded by leading and / or trailing whitespace, which is ignored (unless it’s quoted: see below)
 
 ### Strings
 
-Strings may be single- or double-quoted. Leading and / or trailing whitespace is removed, unless it’s inside the quotes.
+Strings may be single- or double-quoted. Leading and / or trailing whitespace is ignored, unless it’s inside the quotes.
 
 ```dotenv
 UNQUOTED= Lorem ipsum
 SINGLE_QUOTED= 'Lorem ipsum'
 DOUBLE_QUOTED= "Lorem ipsum"
-QUOTED_WITH_SURROUNDING_WHITESPACE= " Lorem ipsum "
+QUOTED_WITH_PRESERVED_WHITESPACE= " Lorem ipsum "
 ```
 
 Within double quotes, escaped newlines (`\n`) / carriage returns (`\r`) are converted to their corresponding literal
