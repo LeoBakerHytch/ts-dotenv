@@ -26,7 +26,7 @@ variables. It’s a trade-off.)
 
 ## Usage
 
-```dotenv
+```env
 # Comments are supported
 TRACING=true
 PORT=3000
@@ -71,7 +71,7 @@ Note:
 
 Strings may be single- or double-quoted. Leading and / or trailing whitespace is ignored, unless it’s inside the quotes.
 
-```dotenv
+```env
 UNQUOTED= Lorem ipsum
 SINGLE_QUOTED= 'Lorem ipsum'
 DOUBLE_QUOTED= "Lorem ipsum"
@@ -81,7 +81,7 @@ QUOTED_WITH_PRESERVED_WHITESPACE= " Lorem ipsum "
 Within double quotes, escaped newlines (`\n`) / carriage returns (`\r`) are converted to their corresponding literal
 characters.
 
-```dotenv
+```env
 DOUBLE_QUOTED_WITH_NEWLINE="Lorem\nipsum"
 DOUBLE_QUOTED_WITH_CR="Lorem\ripsum"
 ```
