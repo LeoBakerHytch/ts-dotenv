@@ -32,9 +32,10 @@
     ],
     "scripts": {
         "build": "tsc --build tsconfig.dist.json",
+        "coverage": "jest --coverage",
         "clean": "rm -rf index.{js,js.map,d.ts} ./lib/*.{js,js.map,d.ts} ./tests/*.{js,js.map,d.ts}",
-        "test": "jest",
-        "prepublishOnly": "npm run build"
+        "prepublishOnly": "npm run build",
+        "test": "jest"
     },
     "dependencies": {},
     "devDependencies": {
