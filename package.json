@@ -23,12 +23,12 @@
     "main": "index.js",
     "types": "index.d.ts",
     "files": [
-        "**/*.js",
-        "**/*.js.map",
-        "**/*.d.ts",
-        "!tests",
-        "!coverage",
-        "!jest.config.js"
+        "index.js",
+        "index.js.map",
+        "index.d.ts",
+        "lib/*.js",
+        "lib/*.js.map",
+        "lib/*.d.ts"
     ],
     "scripts": {
         "build": "tsc --build tsconfig.dist.json",
